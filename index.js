@@ -14,10 +14,6 @@ const questions = [{
     name: "Description"
 }, {
     type: "input",
-    message: "Table of Contents",
-    name: "Table of Contents"
-}, {
-    type: "input",
     message: "What are the steps required to install your project? Provide a step by step explaination.",
     name: "Installation"
 }, {
@@ -25,29 +21,51 @@ const questions = [{
     message: "Provide instructions on how the project is used. Provide screenshots when needed.",
     name: "Usage"
 }, {
-    type: "input",
+    type: "list",
     message: "What licensing is being used for this project?",
+    choices: ["None", "Apache License 2.0", "GNU General Public License v3.0", "MIT"],
     name: "License"
 }, {
     type: "input",
-    message: "",
+    message: "Include guidelines for other developers to contribute to your application or package here.",
     name: "Contributing"
 }, {
     type: "input",
-    message: "",
+    message: "Include any tests that you wrote and ran here",
     name: "Tests"
 }, {
     type: "input",
     message: "",
     name: "Questions"
+}, {
+    type: "input",
+    message: "What is your GitHub username?",
+    name: "Username"
+}, {
+    type: "input",
+    message: "What is your email address?",
+    name: "Email"
 }
 ];
 
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+function writeToFile(fileName, data) {
+    fs.writeToFile(fileName, data, (err) => {
+        if (err) {
+            return console.log(err);
+        }
+        console.log(Success);
+    })
+}
 
 // TODO: Create a function to initialize app
-function init() {}
+function init() {
+    inquirer.prompt(questions)
+    .then((responses) => {
+        fs.appendFile("README.md", generateMarkdown({...responses}), (err) => 
+        err ? console.error(err) : console.log("commit logged!"))
+    })
+}
 
 // Function call to initialize app
 init();
